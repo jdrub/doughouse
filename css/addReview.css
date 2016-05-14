@@ -1,0 +1,12 @@
+.reviewTitle {
+  width: 40%;
+  height: 20px;
+  border-radius: 3px;
+  border: 1px solid #888;
+}
+.reviewText {
+  border-radius: 4px;
+  border: 1px solid #888;
+  width: 50%;
+  height: 300px;
+}

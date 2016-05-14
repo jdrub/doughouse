@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="css/addReview.css">
+</head>
+
+<body>
+
+<form action="http://localhost:8080/postReview" method="post" id="inputForm">
+  Title:<br>
+  <input type="text" name="title" class="reviewTitle">
+  <br>
+  <br>
+</form>
+
+Review:<br>
+<textarea name="text" form="inputForm" class="reviewText"></textarea>
+<br>
+<br>
+
+<input type="submit" value="Submit" form="inputForm">
+</body>
+</html>
