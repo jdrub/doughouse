@@ -6,11 +6,23 @@ function getReviews(numReviewsIn, callback) {
     });
 }
 
+function createReviewHtml(title, text){
+  return '\
+    <div class="review">\
+      <h3 class="reviewTitle">'+title+'</h3>\
+      <div class=reviewText>\
+        <p>'+text+'</p><br>\
+      </div>\
+    </div>\
+    ';
+}
+
 $(document).ready(function(){
   getReviews(10, function(reviews){
-    console.log("returned: " + reviews);
+
     reviews.forEach(function (review){
-      $('#reviews').append('<h3>'+review.title+'</h3><p>'+review.text+'</p><br>');
+      console.log(createReviewHtml(review.title,review.text));
+      $('#reviews').append(createReviewHtml(review.title,review.text));
     });
   });
 });

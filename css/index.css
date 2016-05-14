@@ -1,0 +1,23 @@
+.pageHeading{
+  font-family: 'Roboto';
+  margin-left: 17.5%;
+}
+.pageTitle{
+  margin-bottom: 1px;
+}
+.pageDescription{
+  font-style: italic;
+  margin-top: 1px;
+}
+.review{
+  border-bottom: 1px solid #aaa;
+  width: 65%;
+  margin-left: 17.5%;
+  padding: 10px;
+  font-family: 'Roboto';
+}
+.reviewText{
+
+
+
+  }
