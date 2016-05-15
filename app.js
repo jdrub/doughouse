@@ -31,8 +31,7 @@ app.post('/getReviews', function(req, res){
           console.log(err);
           res.end("error retrieving reviews");
         } else {
-          // res.writeHead(200, { 'Content-Type' : 'application/json' });
-          res.send(docs);
+          res.send(docs.slice(parseInt(req.body.from),parseInt(req.body.numReviews)));
           res.end();
 
         }
@@ -64,7 +63,7 @@ app.post('/postReview', function(req,res) {
             res.end("database error");
           } else {
             console.log('inserted doc with title: ' + req.body.title);
-            res.end('Successfully added review for "' + req.body.title + '""');
+            res.redirect('/');
           }
 
         });

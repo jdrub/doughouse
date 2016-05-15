@@ -1,6 +1,6 @@
-function getReviews(numReviewsIn, callback) {
+function getReviews(fromIn, numReviewsIn, callback) {
 
-  $.post("http://localhost:8080/getReviews", {numReviews: numReviewsIn})
+  $.post("http://localhost:8080/getReviews", {from: fromIn, numReviews: numReviewsIn})
     .done(function(reviews){
       callback(reviews);
     });
@@ -17,12 +17,20 @@ function createReviewHtml(title, text){
     ';
 }
 
-$(document).ready(function(){
-  getReviews(10, function(reviews){
+function getReviewsCallback(reviews){
+  localStorage.setItem("numReviews",reviews.length+parseInt(localStorage.getItem("numReviews")));
 
-    reviews.forEach(function (review){
-      console.log(createReviewHtml(review.title,review.text));
-      $('#reviews').append(createReviewHtml(review.title,review.text));
-    });
+  reviews.forEach(function (review){
+    $('#reviews').append(createReviewHtml(review.title,review.text));
+  });
+}
+
+$(document).ready(function(){
+  localStorage.setItem("numReviews",0);
+  getReviews(0,10, getReviewsCallback);
+
+  $('.loadMoreButton').click(function (){
+    var numReviews = parseInt(localStorage.getItem("numReviews"));
+    getReviews(numReviews,numReviews+10, getReviewsCallback);
   });
 });
