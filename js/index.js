@@ -6,10 +6,15 @@ function getReviews(fromIn, numReviewsIn, callback) {
     });
 }
 
-function createReviewHtml(title, text){
+function createReviewHtml(title,timestamp,text){
+
+  var datestring = timestamp.substring(0,timestamp.indexOf('T'));
+
   return '\
     <div class="review">\
       <h3 class="reviewTitle">'+title+'</h3>\
+      <div class="reviewDate">'+datestring + '\
+      </div>\
       <div class=reviewText>\
         <p>'+text+'</p><br>\
       </div>\
@@ -21,7 +26,7 @@ function getReviewsCallback(reviews){
   localStorage.setItem("numReviews",reviews.length+parseInt(localStorage.getItem("numReviews")));
 
   reviews.forEach(function (review){
-    $('#reviews').append(createReviewHtml(review.title,review.text));
+    $('#reviews').append(createReviewHtml(review.title, review.timestamp,review.text));
   });
 }
 

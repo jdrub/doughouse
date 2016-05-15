@@ -31,6 +31,11 @@ app.post('/getReviews', function(req, res){
           console.log(err);
           res.end("error retrieving reviews");
         } else {
+          
+          // add timestamp before sending it to frontend
+          docs.forEach(function(doc){
+            doc["timestamp"] = mongodb.ObjectId(doc._id).getTimestamp();
+          })
           res.send(docs.slice(parseInt(req.body.from),parseInt(req.body.numReviews)));
           res.end();
 

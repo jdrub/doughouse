@@ -16,6 +16,14 @@
   padding: 10px;
   font-family: 'Roboto';
 }
+.reviewDate{
+  font-family: 'Roboto';
+  font-size: 13px;
+  font-style: italic;
+}
+.reviewTitle{
+  margin-bottom:1px;
+}
 .loadMoreButton{
   width: 20%;
   margin-left: 40%;
