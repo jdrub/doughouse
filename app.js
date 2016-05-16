@@ -18,11 +18,43 @@ app.get('/', function(req, res){
   res.sendFile('index.html', {"root": __dirname});
 });
 
+
+app.post('/searchReviews', function(req,res){
+    MongoClient.connect(url, function(err, db){
+      if(err){
+        console.log(err);
+        res.end("error connecting to database");
+      } else {
+        var reviewColl = db.collection('reviews');
+
+        console.log("req.body.searchQuery: " + req.body.searchQuery);
+
+        var regex = new RegExp(req.body.searchQuery,'i');
+
+        reviewColl.find({title:regex}).sort({_id: -1}).toArray(function (err, docs){
+          if(err){
+            console.log(err);
+            res.end("error retrieving reviews");
+          } else {
+
+            // add timestamp before sending it to frontend
+            docs.forEach(function(doc){
+              doc["timestamp"] = mongodb.ObjectId(doc._id).getTimestamp();
+            });
+            res.send(docs);
+            res.end();
+
+          }
+      });
+    }
+  });
+});
+
 app.post('/getReviews', function(req, res){
   MongoClient.connect(url, function(err,db){
     if(err){
       console.log(err);
-      res.end("database error");
+      res.end("error connecting to database");
     } else {
       var reviewColl = db.collection('reviews');
 
@@ -31,7 +63,7 @@ app.post('/getReviews', function(req, res){
           console.log(err);
           res.end("error retrieving reviews");
         } else {
-          
+
           // add timestamp before sending it to frontend
           docs.forEach(function(doc){
             doc["timestamp"] = mongodb.ObjectId(doc._id).getTimestamp();

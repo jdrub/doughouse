@@ -24,6 +24,17 @@
 .reviewTitle{
   margin-bottom:1px;
 }
+
+.searchForm{
+  float: right;
+  width: 25%;
+  margin-right: 21.5%;
+  padding-right: 0;
+}
+
+.searchBox{
+  width: 100%;
+}
 .loadMoreButton{
   width: 20%;
   margin-left: 40%;
