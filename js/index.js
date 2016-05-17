@@ -58,6 +58,7 @@ $(document).ready(function(){
   });
 
   $('#searchForm').submit( function(){
+
     var numReviews = parseInt(localStorage.getItem("numReviews"));
     var searchQuery = $('.searchBox').val();
 
@@ -68,11 +69,13 @@ $(document).ready(function(){
       $('.review').remove();
     }
 
-
-
     getReviews(numReviews,numReviews+maxReviewsToSend, searchQuery, getReviewsCallback);
     return false;
   });
 
+
+  $('.pageTitle').click(function(){
+    window.location = hostUrl
+  });
 
 });

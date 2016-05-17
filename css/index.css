@@ -4,6 +4,8 @@
 }
 .pageTitle{
   margin-bottom: 1px;
+  cursor: pointer;
+  cursor: hand;
 }
 .pageDescription{
   font-style: italic;

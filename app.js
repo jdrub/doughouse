@@ -21,8 +21,6 @@ app.get('/', function(req, res){
 
 function getReviews(res, from, numReviews, searchQuery) {
 
-  console.log("getting reviews....");
-
   MongoClient.connect(url, function(err,db){
     if(err){
       console.log(err);
@@ -31,31 +29,21 @@ function getReviews(res, from, numReviews, searchQuery) {
       var reviewColl = db.collection('reviews');
 
       var query = {};
-      console.log("searchQuery: " + searchQuery);
 
       if(searchQuery){
         var regexp = new RegExp(searchQuery,'i');
         query= {title: regexp};
       }
 
-      console.log("query: " + JSON.stringify(query));
-
       reviewColl.find(query).sort({_id: -1}).limit(parseInt(numReviews)).toArray(function (err, docs){
         if(err){
           console.log(err);
           res.end("error retrieving reviews");
         } else {
-
-          console.log("from: " + from);
-          console.log("numReviews: " + numReviews);
           // add timestamp before sending it to frontend
           docs.forEach(function(doc){
             doc["timestamp"] = mongodb.ObjectId(doc._id).getTimestamp();
           });
-
-          if(docs.length < 10)
-            console.log("docs: " + JSON.stringify(docs));
-          console.log("sending: " + JSON.stringify(docs.slice(parseInt(from),parseInt(numReviews))));
 
           res.send(docs.slice(parseInt(from),parseInt(numReviews)));
           res.end();
@@ -69,13 +57,15 @@ function getReviews(res, from, numReviews, searchQuery) {
 }
 
 app.post('/searchReviews', function(req,res){
-  console.log("at/searchReviews...");
+  
   getReviews(res, req.body.from, req.body.numReviews, req.body.searchQuery);
+
 });
 
 app.post('/getReviews', function(req, res){
-  console.log("at/getReviews...");
+
   getReviews(res, req.body.from, req.body.numReviews, null);
+
 });
 
 app.get('/writeReview',function(req,res){
