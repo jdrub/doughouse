@@ -1,8 +1,21 @@
-function getReviews(fromIn, numReviewsIn, callback) {
+var hostUrl = 'http://localhost:8080';
+var maxReviewsToSend = 10;
 
-  $.post("http://localhost:8080/getReviews", {from: fromIn, numReviews: numReviewsIn})
+function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
+
+  var endpoint;
+
+  if(searchQueryIn){
+    endpoint = "/searchReviews";
+  } else {
+
+    endpoint = "/getReviews";
+  }
+
+
+  $.post(hostUrl + endpoint, {from: fromIn, numReviews: numReviewsIn, searchQuery: searchQueryIn})
     .done(function(reviews){
-      callback(reviews);
+      callback(reviews, searchQueryIn);
     });
 }
 
@@ -22,7 +35,10 @@ function createReviewHtml(title,timestamp,text){
     ';
 }
 
-function getReviewsCallback(reviews){
+
+
+function getReviewsCallback(reviews, searchQueryIn){
+
   localStorage.setItem("numReviews",reviews.length+parseInt(localStorage.getItem("numReviews")));
 
   reviews.forEach(function (review){
@@ -32,10 +48,31 @@ function getReviewsCallback(reviews){
 
 $(document).ready(function(){
   localStorage.setItem("numReviews",0);
-  getReviews(0,10, getReviewsCallback);
+  localStorage.setItem("searchQuery","");
+
+  getReviews(0,maxReviewsToSend, "", getReviewsCallback);
 
   $('.loadMoreButton').click(function (){
     var numReviews = parseInt(localStorage.getItem("numReviews"));
-    getReviews(numReviews,numReviews+10, getReviewsCallback);
+    getReviews(numReviews,numReviews+10, localStorage.getItem("searchQuery"), getReviewsCallback);
   });
+
+  $('#searchForm').submit( function(){
+    var numReviews = parseInt(localStorage.getItem("numReviews"));
+    var searchQuery = $('.searchBox').val();
+
+    if(localStorage.getItem("searchQuery") != searchQuery){
+      localStorage.setItem("searchQuery",searchQuery);
+      localStorage.setItem("numReviews", 0);
+      numReviews = 0;
+      $('.review').remove();
+    }
+
+
+
+    getReviews(numReviews,numReviews+maxReviewsToSend, searchQuery, getReviewsCallback);
+    return false;
+  });
+
+
 });
