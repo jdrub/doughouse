@@ -5,6 +5,55 @@ var app = express();
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/doughouse';
+var mailin = require('mailin');
+
+
+mailin.start({
+  port: 25,
+  disableWebhook:true
+});
+
+/* Event emitted when a connection with the Mailin smtp server is initiated. */
+mailin.on('startMessage', function (connection) {
+  /* connection = {
+       from: 'sender@somedomain.com',
+       to: 'someaddress@yourdomain.com',
+       id: 't84h5ugf',
+       authentication: { username: null, authenticated: false, status: 'NORMAL' }
+     }
+ }; */
+  console.log(connection);
+});
+
+/* Event emitted after a message was received and parsed. */
+mailin.on('message', function (connection, data, content) {
+  console.log(data);
+  /* Do something useful with the parsed message here.
+  * Use parsed message `data` directly or use raw message `content`. */
+
+ // connect to the doughouse database
+  MongoClient.connect(url, function(err,db){
+    if(err){
+      console.log('unable to connect to the mongodb server.');
+    } else {
+
+        var reviewColl = db.collection('reviews');
+
+        // insert data into the 'reviews' collection
+        reviewColl.insert([{title: data.subject, text: data.text}], function(err,result){
+          if(err){
+            console.log(err);
+          } else {
+            console.log('inserted doc with title: ' + data.subject + ' from email');
+          }
+
+        });
+    }
+  });
+
+
+});
+
 
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -68,6 +117,11 @@ app.post('/getReviews', function(req, res){
 
 });
 
+app.post('/emailReview', function(req, res){
+  console.log("recieved emailReview.. contents: " + req.body);
+  res.end();
+});
+
 app.get('/writeReview',function(req,res){
   res.sendFile('writeReview.html', {"root": __dirname});
 });
@@ -98,6 +152,6 @@ app.post('/postReview', function(req,res) {
 
 });
 
-app.listen(8080, function(){
-  console.log('server running at localhost:8080');
+app.listen(80, function(){
+  console.log('server running at localhost:80');
 });
