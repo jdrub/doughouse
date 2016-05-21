@@ -105,7 +105,7 @@ mailin.on('message', function (connection, data, content) {
 
 
 /*
-* setup some endpoints
+* setup routes
 */
 app.post('/searchReviews', function(req,res){
   getReviews(res, req.body.from, req.body.numReviews, req.body.searchQuery);
@@ -120,6 +120,11 @@ app.post('/emailReview', function(req, res){
   res.end();
 });
 
+// Handle 404
+app.use(function(req, res) {
+  res.status(404);
+  res.sendFile('404.html', {"root": __dirname});
+});
 
 /*
 * start server on port 80
