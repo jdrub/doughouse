@@ -77,12 +77,10 @@ function getReviews(res, from, numReviews, searchQuery) {
           res.send(docs.slice(parseInt(from),parseInt(numReviews)));
           res.end();
 
-        }
-      });
-
-
-    }
-  });
+        } // else
+      }); // find
+    } // else
+  }); // connect
 }
 
 /*
@@ -107,7 +105,7 @@ mailin.on('message', function (connection, data, content) {
 
 
 /*
-* setup a bunch of endpoints
+* setup some endpoints
 */
 app.post('/searchReviews', function(req,res){
   getReviews(res, req.body.from, req.body.numReviews, req.body.searchQuery);
@@ -120,16 +118,6 @@ app.post('/getReviews', function(req, res){
 app.post('/emailReview', function(req, res){
   console.log("recieved emailReview.. contents: " + req.body);
   res.end();
-});
-
-app.get('/writeReview',function(req,res){
-  res.sendFile('writeReview.html', {"root": __dirname});
-});
-// do the following on a post to /postReview
-app.post('/postReview', function(req,res) {
-  console.log('inserting doc from website form');
-  postReview(req.body);
-  res.redirect('/');
 });
 
 
