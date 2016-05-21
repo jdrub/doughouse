@@ -8,54 +8,6 @@ var url = 'mongodb://localhost:27017/doughouse';
 var mailin = require('mailin');
 
 
-mailin.start({
-  port: 25,
-  disableWebhook:true
-});
-
-/* Event emitted when a connection with the Mailin smtp server is initiated. */
-mailin.on('startMessage', function (connection) {
-  /* connection = {
-       from: 'sender@somedomain.com',
-       to: 'someaddress@yourdomain.com',
-       id: 't84h5ugf',
-       authentication: { username: null, authenticated: false, status: 'NORMAL' }
-     }
- }; */
-  console.log(connection);
-});
-
-/* Event emitted after a message was received and parsed. */
-mailin.on('message', function (connection, data, content) {
-  console.log(data);
-  /* Do something useful with the parsed message here.
-  * Use parsed message `data` directly or use raw message `content`. */
-
- // connect to the doughouse database
-  MongoClient.connect(url, function(err,db){
-    if(err){
-      console.log('unable to connect to the mongodb server.');
-    } else {
-
-        var reviewColl = db.collection('reviews');
-
-        // insert data into the 'reviews' collection
-        reviewColl.insert([{title: data.subject, text: data.text}], function(err,result){
-          if(err){
-            console.log(err);
-          } else {
-            console.log('inserted doc with title: ' + data.subject + ' from email');
-          }
-
-        });
-    }
-  });
-
-
-});
-
-
-
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use('/css', express.static(__dirname + '/css'));
@@ -68,6 +20,34 @@ app.get('/', function(req, res){
 });
 
 
+/**
+* postReview
+*/
+function postReview(review){
+  // connect to the doughouse database
+  MongoClient.connect(url, function(err,db){
+   if(err){
+     console.log('unable to connect to the mongodb server.');
+   } else {
+
+       var reviewColl = db.collection('reviews');
+
+       // insert data into the 'reviews' collection
+       reviewColl.insert([review], function(err,result){
+         if(err){
+           console.log(err);
+         } else {
+           console.log('inserted doc with title: ' + title);
+         }
+
+       });
+   }
+  });
+}
+
+/**
+* getReviews
+*/
 function getReviews(res, from, numReviews, searchQuery) {
 
   MongoClient.connect(url, function(err,db){
@@ -105,16 +85,36 @@ function getReviews(res, from, numReviews, searchQuery) {
   });
 }
 
-app.post('/searchReviews', function(req,res){
-  
-  getReviews(res, req.body.from, req.body.numReviews, req.body.searchQuery);
+/*
+* start mail server
+*/
+mailin.start({
+  port: 25,
+  disableWebhook:true
+});
+
+/*
+* post a review whenever we get an email
+*/
+/* Event emitted after a message was received and parsed. */
+mailin.on('message', function (connection, data, content) {
+  console.log(data);
+
+  var review = {title: data.subject, text: data.text};
+  postReview(review);
 
 });
 
+
+/*
+* setup a bunch of endpoints
+*/
+app.post('/searchReviews', function(req,res){
+  getReviews(res, req.body.from, req.body.numReviews, req.body.searchQuery);
+});
+
 app.post('/getReviews', function(req, res){
-
   getReviews(res, req.body.from, req.body.numReviews, null);
-
 });
 
 app.post('/emailReview', function(req, res){
@@ -127,31 +127,15 @@ app.get('/writeReview',function(req,res){
 });
 // do the following on a post to /postReview
 app.post('/postReview', function(req,res) {
-
-  // connect to the doughouse database
-  MongoClient.connect(url, function(err,db){
-    if(err){
-      console.log('unable to connect to the mongodb server.');
-    } else {
-
-        var reviewColl = db.collection('reviews');
-
-        // insert data into the 'reviews' collection
-        reviewColl.insert([req.body], function(err,result){
-          if(err){
-            console.log(err);
-            res.end("database error");
-          } else {
-            console.log('inserted doc with title: ' + req.body.title);
-            res.redirect('/');
-          }
-
-        });
-    }
-  });
-
+  console.log('inserting doc from website form');
+  postReview(req.body);
+  res.redirect('/');
 });
 
+
+/*
+* start server on port 80
+*/
 app.listen(80, function(){
   console.log('server running at localhost:80');
 });
