@@ -1,4 +1,4 @@
-var hostUrl = 'http://localhost:8080';
+var hostUrl = 'http://www.thedoughouse.com';
 var maxReviewsToSend = 10;
 
 function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
