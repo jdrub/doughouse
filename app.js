@@ -121,11 +121,6 @@ app.post('/getReviews', function(req, res){
   getReviews(res, req.body.from, req.body.numReviews, null);
 });
 
-app.post('/emailReview', function(req, res){
-  console.log("recieved emailReview.. contents: " + req.body);
-  res.end();
-});
-
 // Handle 404
 app.use(function(req, res) {
   res.status(404);
