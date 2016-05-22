@@ -98,12 +98,13 @@ mailin.start({
 mailin.on('message', function (connection, data, content) {
 
   ve.emails.forEach(function(email){
-
-    if(email == data.from){
+    
+    if(email == data.from[0].address){
 
       // then valid review sender
       var review = {title: data.subject, text: data.text};
       postReview(review);
+      return;
     }
   });
 
