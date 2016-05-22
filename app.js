@@ -37,7 +37,7 @@ function postReview(review){
          if(err){
            console.log(err);
          } else {
-           console.log('inserted doc with title: ' + title);
+           console.log('inserted doc with title: ' + review.title);
          }
 
        });
