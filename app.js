@@ -6,7 +6,7 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/doughouse';
 var mailin = require('mailin');
-
+var ve = require('./validEmails');
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -92,14 +92,20 @@ mailin.start({
 });
 
 /*
-* post a review whenever we get an email
+* post a review whenever we get an email (from a valid sender)
 */
 /* Event emitted after a message was received and parsed. */
 mailin.on('message', function (connection, data, content) {
-  console.log(data);
 
-  var review = {title: data.subject, text: data.text};
-  postReview(review);
+  ve.emails.forEach(function(email){
+
+    if(email == data.from){
+
+      // then valid review sender
+      var review = {title: data.subject, text: data.text};
+      postReview(review);
+    }
+  });
 
 });
 
