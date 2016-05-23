@@ -34,3 +34,7 @@
 .review-card > .review-date{
   height: 10px;
 }
+
+.searchBox {
+  padding: 10px 0;
+}
