@@ -22,6 +22,10 @@ function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
 function createReviewHtml(title,timestamp,text){
 
   var datestring = timestamp.substring(0,timestamp.indexOf('T'));
+  var likes = 2;
+
+  if(likes == 0)
+    likes = "";
 
   return '\
     <div class="review mdl-grid">\
@@ -32,7 +36,13 @@ function createReviewHtml(title,timestamp,text){
             <h4>'+title+'</h4>\
           </div>\
           <p class="review-date mdl-card__supporting-text">'+datestring+'</p>\
-          <div class="mdl-card__supporting-text">'+text+'</div>\
+          <div class="mdl-card__text">'+text+'</div>\
+          <div class="mdl-card__action-bar">\
+            <button class="mdl-button mdl-js-button mdl-button--icon">\
+              <i class="material-icons indigo500">thumb_up</i>\
+            </button>\
+            <p class="mdl-card__supporting-text likes">'+likes+'</p>\
+          </div>\
         </div>\
       </div>\
       <div class="mdl-cell mdl-cell--2-col"></div>\

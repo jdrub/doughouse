@@ -1,3 +1,23 @@
+.mdl-card__text{
+  padding: 0 16px;
+}
+
+.mdl-card__action-bar{
+  padding: 0 8px;
+  margin: 10px 0;
+  display: flex;
+}
+
+.material-icons.indigo500{
+  color: #3F51B5;
+}
+
+.likes{
+  font-size: 15px;
+  padding-top: 7px;
+  margin-bottom: 0px;
+}
+
 .pageTitle{
   cursor: pointer;
   cursor: hand;
