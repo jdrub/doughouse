@@ -1,54 +1,12 @@
-.pageHeading{
-  /*margin-left: 17.5%;*/
-}
 .pageTitle{
-  margin-bottom: 1px;
   cursor: pointer;
   cursor: hand;
-}
-.pageDescription{
-  font-style: italic;
-  margin-top: 1px;
-}
-.review{
-  /*border-bottom: 1px solid #aaa;*/
-  /*border: 1px solid #aaa;
-  width: 65%;
-  margin-left: 17.5%;
-  margin-bottom: 30px;
-  padding: 10px;
-  font-family: 'Roboto';*/
 }
 
 .review-card.mdl-card{
   width: 100%;
-
-}
-
-.review-card > .mdl-card__title {
-  /*color: #fff;*/
-  /*background-color: #3f51b5;*/
-  /*background-color: #009688;*/
-
 }
 
 .review-card > .review-date{
   height: 10px;
-}
-
-.searchForm{
-  display: inline;
-  float: right;
-  width: 30%;
-  margin-right: 21.5%;
-  padding-right: 0;
-}
-
-.searchBox{
-  width: 60%;
-}
-
-.submitButton{
-  float: right;
-  width: 30%;
 }
