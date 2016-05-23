@@ -83,6 +83,33 @@ function getReviews(res, from, numReviews, searchQuery) {
   }); // connect
 }
 
+/**
+* addLike
+*/
+function addLike(res, titleIn){
+  // connect to the doughouse database
+  MongoClient.connect(url, function(err,db){
+   if(err){
+     console.log('unable to connect to the mongodb server.');
+   } else {
+
+       var reviewColl = db.collection('reviews');
+
+       // insert data into the 'reviews' collection
+       reviewColl.update({title:titleIn},{$inc:{likes:1}},{upsert:false,safe:true}, function(err,result){
+         if(err){
+           console.log(err);
+           res.end("error adding like");
+         } else {
+           console.log('added like to doc with title: ' + titleIn);
+           res.end();
+         }
+
+       });
+   }
+  });
+}
+
 /*
 * start mail server
 */
@@ -98,7 +125,7 @@ mailin.start({
 mailin.on('message', function (connection, data, content) {
 
   ve.emails.forEach(function(email){
-    
+
     if(email == data.from[0].address){
 
       // then valid review sender
@@ -120,6 +147,10 @@ app.post('/searchReviews', function(req,res){
 
 app.post('/getReviews', function(req, res){
   getReviews(res, req.body.from, req.body.numReviews, null);
+});
+
+app.post('/addLike', function(req, res){
+  addLike(res, req.body.title);
 });
 
 // Handle 404

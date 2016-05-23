@@ -8,11 +8,15 @@
   display: flex;
 }
 
+.material-icons.indigo100{
+  color: #8C9EFF;
+}
+
 .material-icons.indigo500{
   color: #3F51B5;
 }
 
-.likes{
+.like-display{
   font-size: 15px;
   padding-top: 7px;
   margin-bottom: 0px;

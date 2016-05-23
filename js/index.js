@@ -19,10 +19,9 @@ function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
     });
 }
 
-function createReviewHtml(title,timestamp,text){
+function createReviewHtml(title,timestamp,text,likes){
 
   var datestring = timestamp.substring(0,timestamp.indexOf('T'));
-  var likes = 2;
 
   if(likes == 0)
     likes = "";
@@ -38,10 +37,10 @@ function createReviewHtml(title,timestamp,text){
           <p class="review-date mdl-card__supporting-text">'+datestring+'</p>\
           <div class="mdl-card__text">'+text+'</div>\
           <div class="mdl-card__action-bar">\
-            <button class="mdl-button mdl-js-button mdl-button--icon">\
+            <button class="like-button mdl-button mdl-js-button mdl-button--icon" id="'+title+'">\
               <i class="material-icons indigo500">thumb_up</i>\
             </button>\
-            <p class="mdl-card__supporting-text likes">'+likes+'</p>\
+            <p class="mdl-card__supporting-text like-display">'+likes+'</p>\
           </div>\
         </div>\
       </div>\
@@ -57,7 +56,7 @@ function getReviewsCallback(reviews, searchQueryIn){
   localStorage.setItem("numReviews",reviews.length+parseInt(localStorage.getItem("numReviews")));
 
   reviews.forEach(function (review){
-    $('#reviews').append(createReviewHtml(review.title, review.timestamp,review.text));
+    $('#reviews').append(createReviewHtml(review.title, review.timestamp,review.text, review.likes));
   });
 }
 
@@ -70,6 +69,27 @@ $(document).ready(function(){
   $('.loadMoreButton').click(function (){
     var numReviews = parseInt(localStorage.getItem("numReviews"));
     getReviews(numReviews,numReviews+10, localStorage.getItem("searchQuery"), getReviewsCallback);
+  });
+
+  $('#reviews').on('click', '.like-button', function () {
+    var title = $(this).attr('id');
+
+    $.post(hostUrl + '/addLike', {title: title});
+
+    var likeElem = $(this).next();
+    var numLikes = likeElem.text();
+
+    if(parseInt(numLikes))
+      likeElem.text(parseInt(numLikes)+1);
+    else
+      likeElem.text(1);
+
+    // disable and color button
+    $(this).prop("disabled", true);
+    var likeIcon = $($(this).children()[0]);
+    likeIcon.removeClass("indigo500");
+    likeIcon.addClass("indigo100");
+
   });
 
   $(document).keyup(function (e) {
