@@ -19,6 +19,28 @@ function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
     });
 }
 
+function likeButtonHtml(title){
+  if($.cookie(title))
+    return disabledLikeButtonHtml(title);
+  else
+    return enabledLikeButtonHtml(title);
+}
+
+function enabledLikeButtonHtml(title){
+  return '\
+    <button class="like-button mdl-button mdl-js-button mdl-button--icon" id="'+title+'">\
+      <i class="material-icons indigo500">thumb_up</i>\
+    </button>'
+}
+
+function disabledLikeButtonHtml(title){
+  return '\
+    <button disabled class="like-button mdl-button mdl-js-button mdl-button--icon" id="'+title+'">\
+      <i class="material-icons indigo100">thumb_up</i>\
+    </button>'
+}
+
+
 function createReviewHtml(title,timestamp,text,likes){
 
   var datestring = timestamp.substring(0,timestamp.indexOf('T'));
@@ -37,9 +59,7 @@ function createReviewHtml(title,timestamp,text,likes){
           <p class="review-date mdl-card__supporting-text">'+datestring+'</p>\
           <div class="mdl-card__text">'+text+'</div>\
           <div class="mdl-card__action-bar">\
-            <button class="like-button mdl-button mdl-js-button mdl-button--icon" id="'+title+'">\
-              <i class="material-icons indigo500">thumb_up</i>\
-            </button>\
+            '+likeButtonHtml(title)+'\
             <p class="mdl-card__supporting-text like-display">'+likes+'</p>\
           </div>\
         </div>\
@@ -75,6 +95,9 @@ $(document).ready(function(){
     var title = $(this).attr('id');
 
     $.post(hostUrl + '/addLike', {title: title});
+
+    // set cookie
+    $.cookie(title, true);
 
     var likeElem = $(this).next();
     var numLikes = likeElem.text();
