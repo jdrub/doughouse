@@ -12,19 +12,28 @@
   margin-top: 1px;
 }
 .review{
-  border-bottom: 1px solid #aaa;
+  /*border-bottom: 1px solid #aaa;*/
+  /*border: 1px solid #aaa;
   width: 65%;
   margin-left: 17.5%;
-  padding: 10px 0px;
-  font-family: 'Roboto';
+  margin-bottom: 30px;
+  padding: 10px;
+  font-family: 'Roboto';*/
 }
-.reviewDate{
-  font-family: 'Roboto';
-  font-size: 13px;
-  font-style: italic;
+
+.review-card.mdl-card{
+  width: 100%;
+
 }
-.reviewTitle{
-  margin-bottom:1px;
+
+.review-card > .mdl-card__title {
+  /*color: #fff;*/
+  /*background-color: #3f51b5;*/
+  /*background-color: #009688;*/
+}
+
+.review-card > .review-date{
+  height: 10px;
 }
 
 .searchForm{

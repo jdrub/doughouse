@@ -1,4 +1,4 @@
-var hostUrl = 'http://www.thedoughouse.com';
+var hostUrl = 'http://localhost';
 var maxReviewsToSend = 10;
 
 function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
@@ -24,14 +24,17 @@ function createReviewHtml(title,timestamp,text){
   var datestring = timestamp.substring(0,timestamp.indexOf('T'));
 
   return '\
-    <div class="review">\
-      <h3 class="reviewTitle">'+title+'</h3>\
-      <div class="reviewDate">'+datestring + '\
-      </div>\
-      <div class=reviewText>\
-        <p>'+text+'</p><br>\
+    <div class="mdl-cell mdl-cell--3-col"></div>\
+    <div class="review mdl-cell mdl-cell--6-col">\
+      <div class="review-card mdl-card mdl-shadow--3dp">\
+        <div class="mdl-card__title mdl-card--border">\
+          <h4>'+title+'</h4>\
+        </div>\
+        <p class="review-date mdl-card__supporting-text">'+datestring+'</p>\
+        <div class="mdl-card__supporting-text">'+text+'</div>\
       </div>\
     </div>\
+    <div class="mdl-cell mdl-cell--3-col"></div>\
     ';
 }
 
