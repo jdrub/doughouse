@@ -1,6 +1,5 @@
 .pageHeading{
-  font-family: 'Roboto';
-  margin-left: 17.5%;
+  /*margin-left: 17.5%;*/
 }
 .pageTitle{
   margin-bottom: 1px;
@@ -30,6 +29,7 @@
   /*color: #fff;*/
   /*background-color: #3f51b5;*/
   /*background-color: #009688;*/
+
 }
 
 .review-card > .review-date{
@@ -51,18 +51,4 @@
 .submitButton{
   float: right;
   width: 30%;
-}
-
-.loadMoreButton{
-  width: 20%;
-  margin-left: 40%;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  font-size: 15px;
-  color: #444;
-  font-family: 'Roboto';
-  border-radius: 5px;
-  border-width: 1px;
-  border color: #999;
-  background-color: white;
 }

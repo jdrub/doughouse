@@ -13,20 +13,37 @@
   </head>
   <body>
 
-    <div class="pageHeading">
-      <h1 class="pageTitle">The DougHouse</h1>
 
-      <form id="searchForm" class="searchForm">
-        <input type="text" name="searchQuery" class="searchBox" placeholder="search">
-        <input type="submit" class="submitButton">
-      </form>
-
-      <p class="pageDescription">Movie reviews for the tl;dr</p>
+    <div class="mdl-grid">
+      <h2 class="mdl-cell mdl-cell--8-col mdl-cell--2-offset-desktop">The DougHouse</h2>
     </div>
 
-    <div id="reviews" class="mdl-grid">
+    <div class="mdl-grid">
+      <p class="mdl-cell mdl-cell--4-col mdl-cell--2-offset-desktop">
+        Movie reviews for the tl;dr
+      </p>
+      <div class="mdl-cell mdl-cell--4-col mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                  mdl-textfield--floating-label mdl-textfield--align-right">
+        <label class="mdl-button mdl-js-button mdl-button--icon"
+               for="waterfall-exp">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <input class="searchBox mdl-textfield__input" type="text"
+                 id="waterfall-exp">
+        </div>
+      </div>
     </div>
-    <input type="button" class="loadMoreButton" value="Load More"/>
+
+    <div id="reviews">
+    </div>
+    <div mdl-grid>
+      <button class="mdl-cell mdl-cell--2-col mdl-cell--5-offset-desktop mdl-cell--3-offset-tablet mdl-cell--1-offset-phone
+        loadMoreButton mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+        View More
+      </button>
+    </div>
+
   </body>
 
 
