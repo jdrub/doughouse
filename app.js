@@ -64,7 +64,7 @@ function getReviews(res, from, numReviews, searchQuery) {
         query= {title: regexp};
       }
 
-      reviewColl.find(query).sort({_id: -1}).limit(parseInt(numReviews)).toArray(function (err, docs){
+      reviewColl.find(query).sort({_id: -1}).limit(parseInt(numReviews+1)).toArray(function (err, docs){
         if(err){
           console.log(err);
           res.end("error retrieving reviews");
@@ -74,7 +74,9 @@ function getReviews(res, from, numReviews, searchQuery) {
             doc["timestamp"] = mongodb.ObjectId(doc._id).getTimestamp();
           });
 
-          res.send(docs.slice(parseInt(from),parseInt(numReviews)));
+          var noMore = (docs.length < parseInt(numReviews)) ? true : false;
+
+          res.send({reviews: docs.slice(parseInt(from),parseInt(numReviews)),noMore:noMore});
           res.end();
 
         } // else

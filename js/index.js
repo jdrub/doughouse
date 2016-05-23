@@ -14,8 +14,8 @@ function getReviews(fromIn, numReviewsIn, searchQueryIn, callback) {
 
 
   $.post(hostUrl + endpoint, {from: fromIn, numReviews: numReviewsIn, searchQuery: searchQueryIn})
-    .done(function(reviews){
-      callback(reviews, searchQueryIn);
+    .done(function(result){
+      callback(result.reviews, result.noMore, searchQueryIn);
     });
 }
 
@@ -71,13 +71,20 @@ function createReviewHtml(title,timestamp,text,likes){
 
 
 
-function getReviewsCallback(reviews, searchQueryIn){
+function getReviewsCallback(reviews, noMore, searchQueryIn){
 
   localStorage.setItem("numReviews",reviews.length+parseInt(localStorage.getItem("numReviews")));
 
   reviews.forEach(function (review){
     $('#reviews').append(createReviewHtml(review.title, review.timestamp,review.text, review.likes));
   });
+
+  console.log("noMore: " + noMore);
+  if(noMore){
+    $('.loadMoreButton').hide();
+  } else {
+    $('.loadMoreButton').show();
+  }
 }
 
 $(document).ready(function(){
