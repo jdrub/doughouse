@@ -6,7 +6,7 @@ var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
 var url = 'mongodb://localhost:27017/doughouse';
 var mailin = require('mailin');
-var ve = require('./validEmails');
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -125,6 +125,9 @@ mailin.start({
 */
 /* Event emitted after a message was received and parsed. */
 mailin.on('message', function (connection, data, content) {
+
+  // grab list of all valid emails
+  var ve = require('./validEmails');
 
   ve.emails.forEach(function(email){
 
