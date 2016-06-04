@@ -129,21 +129,9 @@ mailin.on('message', function (connection, data, content) {
   // grab list of all valid emails
   var ve = require('./validEmails');
 
-  // email authentication
-  if(data.dkim == "failed"){
-    console.log("dkim failed");
-    return;
-  }
-
-  // email validation
-  if(data.spf == "failed"){
-    console.log("spf failed");
-    return;
-  }
-
-  // check for invalid header content
-  if(!data.from){
-    console.log("invalid content");
+  // check for spoofing
+  if(data.dkim == "failed" && data.spf == "failed"){
+    console.log("suspected spoofing");
     return;
   }
 
