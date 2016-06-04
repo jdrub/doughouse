@@ -129,6 +129,11 @@ mailin.on('message', function (connection, data, content) {
   // grab list of all valid emails
   var ve = require('./validEmails');
 
+  // check for invalid header content
+  if(!data.from){
+    return;
+  }
+
   ve.emails.forEach(function(email){
 
     if(email == data.from[0].address){
